@@ -1,10 +1,10 @@
 export type IdeaStatus =
   | "pending_hod"
-  | "rejected_hod"
-  | "pending_md"
   | "approved"
-  | "rejected_md"
-  | "in_execution";
+  | "pending_md"
+  | "completed" // CHANGED from "in_execution"
+  | "rejected_hod"
+  | "rejected_md";
 
 export type IdeaType =
   | "cost_savings"
@@ -104,5 +104,5 @@ export const STATUS_LABELS: Record<IdeaStatus, string> = {
   pending_md: "Pending MD",
   approved: "Approved",
   rejected_md: "MD Rejected",
-  in_execution: "In Execution",
+  completed: "Completed",
 };

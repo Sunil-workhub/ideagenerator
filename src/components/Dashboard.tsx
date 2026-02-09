@@ -42,7 +42,7 @@ const Dashboard = () => {
     pending: ideas.filter(
       (i) => i.status === "pending_hod" || i.status === "pending_md",
     ).length,
-    approved: ideas.filter((i) => i.status === "in_execution").length,
+    approved: ideas.filter((i) => i.status === "completed").length,
     rejected: ideas.filter(
       (i) => i.status === "rejected_hod" || i.status === "rejected_md",
     ).length,
@@ -88,7 +88,7 @@ const Dashboard = () => {
     if (status === "pending_hod" || status === "pending_md") {
       return "border-l-amber-500";
     }
-    if (status === "approved" || status === "in_execution") {
+    if (status === "approved" || status === "completed") {
       return "border-l-emerald-500";
     }
     if (status === "rejected_hod" || status === "rejected_md") {
@@ -102,7 +102,7 @@ const Dashboard = () => {
     if (status === "pending_hod" || status === "pending_md") {
       return "bg-amber-50/50";
     }
-    if (status === "approved" || status === "in_execution") {
+    if (status === "approved" || status === "completed") {
       return "bg-emerald-50/50";
     }
     if (status === "rejected_hod" || status === "rejected_md") {

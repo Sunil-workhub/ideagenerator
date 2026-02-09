@@ -19,7 +19,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-// import reviewDoodle from "../../assets/images/review-doodle.png"; // Adjust the filename as per your download
 import reviewDoodle from "../assets/images/review-doodle.png";
 
 const IdeaDetail = () => {
@@ -28,6 +27,7 @@ const IdeaDetail = () => {
   const navigate = useNavigate();
   const [remarks, setRemarks] = useState("");
   const [showRejectForm, setShowRejectForm] = useState(false);
+  const [showApproveForm, setShowApproveForm] = useState(false);
   const [showApproveConfirm, setShowApproveConfirm] = useState(false);
   const [showRejectConfirm, setShowRejectConfirm] = useState(false);
 
@@ -46,21 +46,25 @@ const IdeaDetail = () => {
     );
   }
 
+  // ANY HOD can approve HOD-level ideas (no department restriction)
   const canHODApprove =
     currentUser.role === "hod" && idea.status === "pending_hod";
-  // && DEPARTMENTS[idea.functionTheme] === currentUser.dept;
+
+  // Only MD can approve MD-level ideas
   const canMDApprove =
     currentUser.role === "md" && idea.status === "pending_md";
 
   const confirmApprove = () => {
     if (canHODApprove) {
-      updateIdeaStatus(idea.id, "approved");
-      toast.success("Idea approved and forwarded to MD");
+      updateIdeaStatus(idea.id, "approved", remarks);
+      toast.success("Idea approved with remarks and forwarded to MD");
     } else if (canMDApprove) {
-      updateIdeaStatus(idea.id, "in_execution");
-      toast.success("Idea approved and assigned for execution");
+      updateIdeaStatus(idea.id, "completed", remarks);
+      toast.success("Idea approved with remarks and marked as completed");
     }
     setShowApproveConfirm(false);
+    setRemarks("");
+    setShowApproveForm(false);
   };
 
   const confirmReject = () => {
@@ -191,29 +195,29 @@ const IdeaDetail = () => {
                       </span>
                     )}
                   </div>
-                  {idea.status === "in_execution" && (
+                  {idea.status === "completed" && (
                     <>
                       <div className="h-px w-6 bg-border" />
-                      <div className="flex items-center gap-1 px-2 py-1 rounded border status-execution">
+                      <div className="flex items-center gap-1 px-2 py-1 rounded border status-completed">
                         <Clock className="h-3 w-3" />
                         <span>
-                          Execution: {DEPARTMENTS[idea.functionTheme]}
+                          Completed: {DEPARTMENTS[idea.functionTheme]}
                         </span>
                       </div>
                     </>
                   )}
                 </div>
                 {idea.hodRemarks && (
-                  <div className="mt-2 p-2 rounded bg-destructive/5 border border-destructive/20 text-xs">
-                    <span className="font-medium text-destructive">
+                  <div className="mt-2 p-2 rounded bg-primary/10 border border-primary/20 text-xs">
+                    <span className="font-medium text-primary">
                       HOD Remarks:
                     </span>{" "}
                     {idea.hodRemarks}
                   </div>
                 )}
                 {idea.mdRemarks && (
-                  <div className="mt-2 p-2 rounded bg-destructive/5 border border-destructive/20 text-xs">
-                    <span className="font-medium text-destructive">
+                  <div className="mt-2 p-2 rounded bg-emerald-50 border border-emerald-200 text-xs">
+                    <span className="font-medium text-emerald-700">
                       MD Remarks:
                     </span>{" "}
                     {idea.mdRemarks}
@@ -221,33 +225,67 @@ const IdeaDetail = () => {
                 )}
               </div>
 
+              {/* Action Section */}
               {(canHODApprove || canMDApprove) && (
                 <div className="p-4">
                   <label className="text-xs text-muted-foreground uppercase tracking-wider font-medium mb-2 block">
                     {canHODApprove ? "HOD Action" : "MD Action"}
                   </label>
+
                   {showRejectForm ? (
                     <div className="space-y-2">
                       <Textarea
                         value={remarks}
                         onChange={(e) => setRemarks(e.target.value)}
-                        placeholder="Enter remarks for rejection (required)..."
-                        className="text-xs min-h-[60px]"
+                        placeholder="Enter rejection remarks (required)..."
+                        className="text-xs min-h-[80px]"
                       />
                       <div className="flex gap-2">
                         <Button
                           size="sm"
                           variant="destructive"
-                          className="text-xs h-8"
+                          className="text-xs h-8 flex-1"
                           onClick={() => setShowRejectConfirm(true)}
                         >
-                          Confirm Reject
+                          <X className="h-3 w-3" /> Confirm Reject
                         </Button>
                         <Button
                           size="sm"
                           variant="outline"
                           className="text-xs h-8"
-                          onClick={() => setShowRejectForm(false)}
+                          onClick={() => {
+                            setShowRejectForm(false);
+                            setRemarks("");
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  ) : showApproveForm ? (
+                    <div className="space-y-2">
+                      <Textarea
+                        value={remarks}
+                        onChange={(e) => setRemarks(e.target.value)}
+                        placeholder="Enter approval remarks (optional but recommended)..."
+                        className="text-xs min-h-[80px]"
+                      />
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          className="text-xs h-8 gap-1 flex-1"
+                          onClick={() => setShowApproveConfirm(true)}
+                        >
+                          <Check className="h-3 w-3" /> Confirm Approve
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-xs h-8"
+                          onClick={() => {
+                            setShowApproveForm(false);
+                            setRemarks("");
+                          }}
                         >
                           Cancel
                         </Button>
@@ -257,15 +295,15 @@ const IdeaDetail = () => {
                     <div className="flex gap-2">
                       <Button
                         size="sm"
-                        className="text-xs h-8 gap-1"
-                        onClick={() => setShowApproveConfirm(true)}
+                        className="text-xs h-8 gap-1 flex-1 bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-700 hover:text-emerald-800"
+                        onClick={() => setShowApproveForm(true)}
                       >
                         <Check className="h-3 w-3" /> Approve
                       </Button>
                       <Button
                         size="sm"
                         variant="destructive"
-                        className="text-xs h-8 gap-1"
+                        className="text-xs h-8 gap-1 flex-1"
                         onClick={() => setShowRejectForm(true)}
                       >
                         <X className="h-3 w-3" /> Reject
@@ -305,7 +343,12 @@ const IdeaDetail = () => {
               <span className="font-mono font-bold">{idea.refNo}</span>?
               {canHODApprove &&
                 " This will forward the idea to MD for final approval."}
-              {canMDApprove && " This will assign the idea for execution."}
+              {canMDApprove && " This will mark the idea as completed."}
+              {remarks && (
+                <div className="mt-2 p-2 bg-emerald-50 border rounded text-xs">
+                  Remarks: {remarks}
+                </div>
+              )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -328,6 +371,9 @@ const IdeaDetail = () => {
               Are you sure you want to reject idea{" "}
               <span className="font-mono font-bold">{idea.refNo}</span>? This
               action cannot be undone.
+              <div className="mt-2 p-2 bg-destructive/10 border border-destructive/20 rounded text-xs">
+                Remarks: {remarks}
+              </div>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

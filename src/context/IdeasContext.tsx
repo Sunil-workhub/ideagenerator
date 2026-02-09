@@ -217,23 +217,25 @@ export const IdeasProvider: React.FC<{ children: React.ReactNode }> = ({
       setIdeas((prev) =>
         prev.map((idea) => {
           if (idea.id !== ideaId) return idea;
-          const updates: Partial<Idea> = {};
+          const updates: Partial<Idea> = { status };
 
           if (newStatus === "approved") {
             // HOD approved → forward to MD
             updates.status = "pending_md";
             updates.hodApprovedBy = currentUser.name;
             updates.hodApprovedDate = new Date().toISOString();
+            if (remarks) updates.hodRemarks = remarks; // NEW: Store approval remarks
           } else if (newStatus === "rejected_hod") {
             updates.status = "rejected_hod";
             updates.hodApprovedBy = currentUser.name;
             updates.hodApprovedDate = new Date().toISOString();
             if (remarks) updates.hodRemarks = remarks;
-          } else if (newStatus === "in_execution") {
-            // MD approved → in execution
-            updates.status = "in_execution";
+          } else if (newStatus === "completed") {
+            // CHANGED: from "in_execution"
+            updates.status = "completed";
             updates.mdApprovedBy = currentUser.name;
             updates.mdApprovedDate = new Date().toISOString();
+            if (remarks) updates.mdRemarks = remarks;
           } else if (newStatus === "rejected_md") {
             updates.status = "rejected_md";
             updates.mdApprovedBy = currentUser.name;

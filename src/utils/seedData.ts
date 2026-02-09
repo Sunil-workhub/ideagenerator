@@ -16,7 +16,7 @@ export const SEED_IDEAS: Omit<Idea, "id" | "refNo">[] = [
 <li><strong>HR + Admin Cost:</strong> Right-sizing of teams / structure</li>
 </ul>`,
     flowchart: null,
-    status: "in_execution",
+    status: "completed",
     hodApprovedBy: "Meera Nair",
     hodApprovedDate: new Date("2026-01-11").toISOString(),
     mdApprovedBy: "Vikram Singh",
@@ -39,7 +39,7 @@ export const SEED_IDEAS: Omit<Idea, "id" | "refNo">[] = [
 <li><strong>HOTO Automation:</strong> Software for on-time HOTO submission from site</li>
 </ol>`,
     flowchart: null,
-    status: "in_execution",
+    status: "completed",
     hodApprovedBy: "Meera Nair",
     hodApprovedDate: new Date("2026-01-13").toISOString(),
     mdApprovedBy: "Vikram Singh",
@@ -80,7 +80,7 @@ export const SEED_IDEAS: Omit<Idea, "id" | "refNo">[] = [
 <li><strong>Export Packing:</strong> Improve packing precision for export goods</li>
 </ul>`,
     flowchart: null,
-    status: "in_execution",
+    status: "completed",
     hodApprovedBy: "Meera Nair",
     hodApprovedDate: new Date("2026-01-19").toISOString(),
     mdApprovedBy: "Vikram Singh",
@@ -157,7 +157,7 @@ export const SEED_IDEAS: Omit<Idea, "id" | "refNo">[] = [
 <li><strong>Air Compressor Upgrade:</strong> Old compressor → frequent maintenance + spares replacement. Buy new compressor → avoid maintenance/spares cost</li>
 </ol>`,
     flowchart: null,
-    status: "in_execution",
+    status: "completed",
     hodApprovedBy: "Meera Nair",
     hodApprovedDate: new Date("2026-01-27").toISOString(),
     mdApprovedBy: "Vikram Singh",
@@ -187,7 +187,7 @@ export const SEED_IDEAS: Omit<Idea, "id" | "refNo">[] = [
 <p><strong>Open Source Strategy:</strong> Application development via free open source owner model → save approx 50–60% development cost</p>
 <p>Leverage open source frameworks, libraries, and tools for custom application development while maintaining full ownership and control.</p>`,
     flowchart: null,
-    status: "in_execution",
+    status: "completed",
     hodApprovedBy: "Rahul Verma",
     hodApprovedDate: new Date("2026-01-30").toISOString(),
     mdApprovedBy: "Vikram Singh",
@@ -379,7 +379,7 @@ export const SEED_IDEAS: Omit<Idea, "id" | "refNo">[] = [
 <li><strong>Cost Avoidance:</strong> Buy 3 months stock at old price if ~10% price rise expected</li>
 </ol>`,
     flowchart: null,
-    status: "in_execution",
+    status: "completed",
     hodApprovedBy: "Kavita Desai",
     hodApprovedDate: new Date("2026-02-06").toISOString(),
     mdApprovedBy: "Vikram Singh",
